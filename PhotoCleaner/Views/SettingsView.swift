@@ -29,7 +29,7 @@ struct SettingsView: View {
                 } header: {
                     Text("削除条件")
                 } footer: {
-                    Text("この日数以上前の写真のみ削除対象になります。Amazon Photosへのバックアップが完了していることを前提とした猶予期間です。")
+                    Text("この日数以上前の写真のみ削除対象になります。動画は対象外です。Amazon Photosへのバックアップが完了していることを前提とした猶予期間です。")
                 }
 
                 Section {
