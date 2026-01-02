@@ -1,0 +1,5 @@
+// ローカル開発用設定
+// このファイルを LocalConfig.xcconfig にコピーして使用
+// LocalConfig.xcconfig は .gitignore に含まれています
+
+DEVELOPMENT_TEAM = YOUR_TEAM_ID_HERE

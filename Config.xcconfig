@@ -1,0 +1,8 @@
+// 共有設定（コミット対象）
+// ローカル設定は LocalConfig.xcconfig に記述
+
+DEVELOPMENT_TEAM =
+CODE_SIGN_STYLE = Automatic
+
+// ローカル設定を読み込み（ファイルがなくてもOK）
+#include? "LocalConfig.xcconfig"
