@@ -481,20 +481,22 @@ final class PhotoService {
 
     // MARK: - Contact Sheet Generation
 
-    /// 月ごとのカレンダー型コンタクトシートを生成
+    /// 月ごとのカレンダー型コンタクトシートを生成（iPhone縦長比率: 4列×8行）
     func generateContactSheet(
         for monthKey: String,  // "yyyy-MM"
         assets: [PHAsset],
-        cellSize: CGSize = CGSize(width: 200, height: 200)
+        cellSize: CGSize = CGSize(width: 240, height: 240)
     ) async -> UIImage? {
-        let columns = 7
-        let rows = 5
-        let headerHeight: CGFloat = 60
-        let dayLabelHeight: CGFloat = 30
-        let padding: CGFloat = 2
+        let columns = 4
+        let rows = 8
+        let headerHeight: CGFloat = 120  // ノッチ対応で上部余白増
+        let footerHeight: CGFloat = 80   // 下部余白（角丸対応）
+        let sideMargin: CGFloat = 24     // 左右余白
+        let padding: CGFloat = 6
 
-        let totalWidth = CGFloat(columns) * (cellSize.width + padding) + padding
-        let totalHeight = headerHeight + dayLabelHeight + CGFloat(rows) * (cellSize.height + padding) + padding
+        let contentWidth = CGFloat(columns) * (cellSize.width + padding) - padding
+        let totalWidth = contentWidth + sideMargin * 2
+        let totalHeight = headerHeight + CGFloat(rows) * (cellSize.height + padding) - padding + footerHeight
 
         // 月の情報を取得
         let dateFormatter = DateFormatter()
@@ -503,11 +505,8 @@ final class PhotoService {
 
         let calendar = Calendar.current
         let range = calendar.range(of: .day, in: .month, for: monthDate)!
-        let firstWeekday = calendar.component(.weekday, from: monthDate) - 1  // 0-indexed (日曜=0)
 
         // 日付ごとにアセットをマッピング
-        let dayFormatter = DateFormatter()
-        dayFormatter.dateFormat = "d"
         var assetsByDay: [Int: PHAsset] = [:]
         for asset in assets {
             if let date = asset.creationDate {
@@ -536,37 +535,25 @@ final class PhotoService {
             titleFormatter.dateFormat = "yyyy年M月"
             let title = titleFormatter.string(from: monthDate)
 
+            let paragraphStyle = NSMutableParagraphStyle()
+            paragraphStyle.alignment = .center
+
             let titleAttributes: [NSAttributedString.Key: Any] = [
-                .font: UIFont.boldSystemFont(ofSize: 28),
-                .foregroundColor: UIColor.label
+                .font: UIFont.boldSystemFont(ofSize: 36),
+                .foregroundColor: UIColor.label,
+                .paragraphStyle: paragraphStyle
             ]
-            let titleRect = CGRect(x: padding, y: 10, width: totalWidth - padding * 2, height: 40)
+            let titleRect = CGRect(x: sideMargin, y: 50, width: totalWidth - sideMargin * 2, height: 50)
             title.draw(in: titleRect, withAttributes: titleAttributes)
 
-            // 曜日ラベル
-            let weekdays = ["日", "月", "火", "水", "木", "金", "土"]
-            let weekdayAttributes: [NSAttributedString.Key: Any] = [
-                .font: UIFont.systemFont(ofSize: 14),
-                .foregroundColor: UIColor.secondaryLabel
-            ]
-            for (i, weekday) in weekdays.enumerated() {
-                let x = padding + CGFloat(i) * (cellSize.width + padding)
-                let rect = CGRect(x: x, y: headerHeight, width: cellSize.width, height: dayLabelHeight)
-                let paragraphStyle = NSMutableParagraphStyle()
-                paragraphStyle.alignment = .center
-                var attrs = weekdayAttributes
-                attrs[.paragraphStyle] = paragraphStyle
-                weekday.draw(in: rect, withAttributes: attrs)
-            }
-
-            // 日付セル
+            // 日付セル（4列×8行、左上から順番に1〜31）
             for day in 1...range.count {
-                let position = firstWeekday + day - 1
-                let col = position % 7
-                let row = position / 7
+                let index = day - 1
+                let col = index % columns
+                let row = index / columns
 
-                let x = padding + CGFloat(col) * (cellSize.width + padding)
-                let y = headerHeight + dayLabelHeight + padding + CGFloat(row) * (cellSize.height + padding)
+                let x = sideMargin + CGFloat(col) * (cellSize.width + padding)
+                let y = headerHeight + CGFloat(row) * (cellSize.height + padding)
                 let cellRect = CGRect(x: x, y: y, width: cellSize.width, height: cellSize.height)
 
                 if let thumbnail = thumbnails[day] {
@@ -574,25 +561,25 @@ final class PhotoService {
                     thumbnail.draw(in: cellRect)
 
                     // 日付オーバーレイ
-                    let overlay = CGRect(x: x, y: y, width: 30, height: 24)
-                    UIColor.black.withAlphaComponent(0.5).setFill()
+                    let overlay = CGRect(x: x, y: y, width: 36, height: 28)
+                    UIColor.black.withAlphaComponent(0.6).setFill()
                     UIBezierPath(roundedRect: overlay, cornerRadius: 4).fill()
 
                     let dayText = "\(day)"
                     let dayAttrs: [NSAttributedString.Key: Any] = [
-                        .font: UIFont.boldSystemFont(ofSize: 14),
+                        .font: UIFont.boldSystemFont(ofSize: 16),
                         .foregroundColor: UIColor.white
                     ]
-                    dayText.draw(in: CGRect(x: x + 4, y: y + 4, width: 24, height: 18), withAttributes: dayAttrs)
+                    dayText.draw(in: CGRect(x: x + 6, y: y + 5, width: 28, height: 20), withAttributes: dayAttrs)
                 } else {
                     // プレースホルダー
                     UIColor.systemGray5.setFill()
-                    UIBezierPath(roundedRect: cellRect, cornerRadius: 4).fill()
+                    UIBezierPath(roundedRect: cellRect, cornerRadius: 8).fill()
 
                     let dayText = "\(day)"
                     let placeholderAttrs: [NSAttributedString.Key: Any] = [
-                        .font: UIFont.systemFont(ofSize: 16),
-                        .foregroundColor: UIColor.systemGray2
+                        .font: UIFont.systemFont(ofSize: 24, weight: .medium),
+                        .foregroundColor: UIColor.systemGray3
                     ]
                     let textSize = dayText.size(withAttributes: placeholderAttrs)
                     let textX = x + (cellSize.width - textSize.width) / 2
