@@ -19,6 +19,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		7325FD5D2F07FCE500607568 /* LocalConfig.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = LocalConfig.xcconfig; sourceTree = "<group>"; };
 		E81234540001 /* PhotoCleaner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PhotoCleaner.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E81234550001 /* PhotoCleanerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCleanerApp.swift; sourceTree = "<group>"; };
 		E81234550002 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
@@ -48,6 +49,7 @@
 			children = (
 				E81234100001 /* PhotoCleaner */,
 				E81234200001 /* Products */,
+				7325FD5D2F07FCE500607568 /* LocalConfig.xcconfig */,
 			);
 			sourceTree = "<group>";
 		};
@@ -194,6 +196,7 @@
 /* Begin XCBuildConfiguration section */
 		E81234800001 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7325FD5D2F07FCE500607568 /* LocalConfig.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -259,6 +262,7 @@
 		};
 		E81234800002 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7325FD5D2F07FCE500607568 /* LocalConfig.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -348,6 +352,7 @@
 		};
 		E81234900002 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7325FD5D2F07FCE500607568 /* LocalConfig.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
