@@ -1,0 +1,30 @@
+{
+  "name": "Photo Cleaner",
+  "identifier": "io.github.azu.photo-cleaner.source",
+  "sourceURL": "https://azu.github.io/photo-cleaner/apps.json",
+  "apps": [
+    {
+      "name": "Photo Cleaner",
+      "bundleIdentifier": "io.github.azu.photo-cleaner",
+      "developerName": "azu",
+      "website": "https://github.com/azu/photo-cleaner",
+      "subtitle": "Clean up backed-up photos",
+      "localizedDescription": "Amazon Photosにバックアップ済みの写真をiPhoneから自動的に削除するアプリ。お気に入りやアルバム所属の写真は保護し、月ごとに1枚を自動でKeepアルバムに残して振り返りを担保します。",
+      "iconURL": "https://raw.githubusercontent.com/azu/photo-cleaner/main/docs/icon.png",
+      "tintColor": "007AFF",
+      "screenshotURLs": [
+        "https://raw.githubusercontent.com/azu/photo-cleaner/main/docs/ss1.png",
+        "https://raw.githubusercontent.com/azu/photo-cleaner/main/docs/ss2.png",
+        "https://raw.githubusercontent.com/azu/photo-cleaner/main/docs/ss3.png",
+        "https://raw.githubusercontent.com/azu/photo-cleaner/main/docs/ss4.png"
+      ],
+      "version": "1.0.0",
+      "versionDate": "2025-01-03",
+      "versionDescription": "Initial release",
+      "downloadURL": "https://github.com/azu/photo-cleaner/releases/download/v1.0.0/PhotoCleaner.ipa",
+      "size": 0,
+      "minOSVersion": "17.0"
+    }
+  ],
+  "news": []
+}

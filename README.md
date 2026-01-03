@@ -30,13 +30,29 @@ iPhoneのストレージは限られています。Amazon Photosなどのクラ�
 - 削除前に「月ごとの思い出」を1枚の画像にまとめて保存
 - 動画は削除対象外（写真のみ）
 
-## 必要条件
+## インストール（AltStore/SideStore）
+
+[AltStore](https://altstore.io/)または[SideStore](https://sidestore.io/)を使ってインストールできます。
+
+1. AltStore/SideStoreを開く
+2. 「Sources」タブ → 左上の「+」ボタン
+3. 以下のURLを入力:
+
+```
+https://azu.github.io/photo-cleaner/apps.json
+```
+
+4. 「Photo Cleaner」をインストール
+
+## ビルド（開発者向け）
+
+### 必要条件
 
 - Xcode 15以上
 - iOS 17以上
 - Apple Developer Account（無料アカウントでも可）
 
-## セットアップ
+### セットアップ
 
 ### 1. クローンとセットアップ
 
