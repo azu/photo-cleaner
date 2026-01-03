@@ -97,7 +97,7 @@ final class CleanerViewModel: ObservableObject {
             let candidates = try await photoService.fetchDeletionCandidates(
                 olderThan: effectiveSettings.backupGraceDays,
                 generateContactSheet: effectiveSettings.generateContactSheet,
-                keepAlbumName: effectiveSettings.keepAlbumName
+                protectedAlbumNames: effectiveSettings.protectedAlbumNames
             )
             deletionCandidates = candidates
 

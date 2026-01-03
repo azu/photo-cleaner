@@ -33,6 +33,23 @@ struct SettingsView: View {
                 }
 
                 Section {
+                    NavigationLink {
+                        AlbumPickerView(selectedAlbums: $settingsStore.settings.protectedAlbumNames)
+                    } label: {
+                        HStack {
+                            Text("保護するアルバム")
+                            Spacer()
+                            Text("\(settingsStore.settings.protectedAlbumNames.count)件")
+                                .foregroundColor(.secondary)
+                        }
+                    }
+                } header: {
+                    Text("削除対象外")
+                } footer: {
+                    Text("選択したアルバム内の写真は削除されません。")
+                }
+
+                Section {
                     Toggle("コンタクトシートを生成", isOn: $settingsStore.settings.generateContactSheet)
 
                     if settingsStore.settings.generateContactSheet {

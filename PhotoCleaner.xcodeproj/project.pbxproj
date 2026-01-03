@@ -16,6 +16,7 @@
 		E81234560007 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = E81234550007 /* AppSettings.swift */; };
 		E81234560008 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E81234550008 /* Assets.xcassets */; };
 		E81234560010 /* DebugPhotoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E81234550010 /* DebugPhotoService.swift */; };
+		E81234560011 /* AlbumPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E81234550011 /* AlbumPickerView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,6 +32,7 @@
 		E81234550008 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E81234550009 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E81234550010 /* DebugPhotoService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugPhotoService.swift; sourceTree = "<group>"; };
+		E81234550011 /* AlbumPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumPickerView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,6 +83,7 @@
 				E81234550002 /* MainView.swift */,
 				E81234550003 /* ThumbnailGridView.swift */,
 				E81234550004 /* SettingsView.swift */,
+				E81234550011 /* AlbumPickerView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -188,6 +191,7 @@
 				E81234560006 /* PhotoService.swift in Sources */,
 				E81234560007 /* AppSettings.swift in Sources */,
 				E81234560010 /* DebugPhotoService.swift in Sources */,
+				E81234560011 /* AlbumPickerView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

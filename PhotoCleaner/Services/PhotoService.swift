@@ -106,7 +106,7 @@ final class PhotoService {
     // MARK: - Fetch Deletion Candidates
 
     /// 削除候補をPHFetchResultベースで取得（メモリ効率的）
-    func fetchDeletionCandidates(olderThan days: Int, generateContactSheet: Bool, keepAlbumName: String = "Keep") async throws -> DeletionCandidates {
+    func fetchDeletionCandidates(olderThan days: Int, generateContactSheet: Bool, protectedAlbumNames: [String] = ["Keep"]) async throws -> DeletionCandidates {
         let status = checkAuthorizationStatus()
         guard status == .authorized || status == .limited else {
             throw PhotoServiceError.notAuthorized
@@ -122,7 +122,7 @@ final class PhotoService {
         options.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: true)]
 
         let fetchResult = PHAsset.fetchAssets(with: .image, options: options)
-        let albumAssetIDs = fetchKeepAlbumAssetIDs(albumName: keepAlbumName)
+        let albumAssetIDs = fetchProtectedAlbumAssetIDs(albumNames: protectedAlbumNames)
 
         #if DEBUG
         print("DEBUG: cutoffDate = \(cutoffDate)")
@@ -152,31 +152,59 @@ final class PhotoService {
         )
     }
 
-    /// Keepアルバムに所属するアセットIDを取得（コンタクトシート保護用）
-    private func fetchKeepAlbumAssetIDs(albumName: String) -> Set<String> {
-        let fetchOptions = PHFetchOptions()
-        fetchOptions.predicate = NSPredicate(format: "title = %@", albumName)
-        let albums = PHAssetCollection.fetchAssetCollections(
-            with: .album,
-            subtype: .any,
-            options: fetchOptions
-        )
-
-        guard let album = albums.firstObject else {
-            return []
-        }
-
+    /// 保護対象アルバムに所属するアセットIDを取得
+    private func fetchProtectedAlbumAssetIDs(albumNames: [String]) -> Set<String> {
         var assetIDs = Set<String>()
-        let assets = PHAsset.fetchAssets(in: album, options: nil)
-        assets.enumerateObjects { asset, _, _ in
-            assetIDs.insert(asset.localIdentifier)
+
+        for albumName in albumNames {
+            let fetchOptions = PHFetchOptions()
+            fetchOptions.predicate = NSPredicate(format: "title = %@", albumName)
+            let albums = PHAssetCollection.fetchAssetCollections(
+                with: .album,
+                subtype: .any,
+                options: fetchOptions
+            )
+
+            guard let album = albums.firstObject else {
+                continue
+            }
+
+            let assets = PHAsset.fetchAssets(in: album, options: nil)
+            assets.enumerateObjects { asset, _, _ in
+                assetIDs.insert(asset.localIdentifier)
+            }
+
+            #if DEBUG
+            print("DEBUG: Protected album '\(albumName)' contains \(assets.count) assets")
+            #endif
         }
 
         #if DEBUG
-        print("DEBUG: Keep album '\(albumName)' contains \(assetIDs.count) assets")
+        print("DEBUG: Total protected assets = \(assetIDs.count)")
         #endif
 
         return assetIDs
+    }
+
+    // MARK: - Album List
+
+    /// ユーザーのアルバム一覧を取得
+    func fetchUserAlbums() -> [String] {
+        var albumNames: [String] = []
+
+        let userAlbums = PHAssetCollection.fetchAssetCollections(
+            with: .album,
+            subtype: .albumRegular,
+            options: nil
+        )
+
+        userAlbums.enumerateObjects { collection, _, _ in
+            if let title = collection.localizedTitle {
+                albumNames.append(title)
+            }
+        }
+
+        return albumNames.sorted()
     }
 
     // MARK: - Sampling for Keep (Density-based)

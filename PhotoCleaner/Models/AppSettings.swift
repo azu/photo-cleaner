@@ -3,12 +3,14 @@ import Foundation
 struct AppSettings: Codable {
     var backupGraceDays: Int
     var generateContactSheet: Bool
-    var keepAlbumName: String
+    var keepAlbumName: String  // コンタクトシート保存先
+    var protectedAlbumNames: [String]  // 保護するアルバム（削除対象外）
 
     static let `default` = AppSettings(
         backupGraceDays: 730,  // 2年
         generateContactSheet: true,
-        keepAlbumName: "Keep"
+        keepAlbumName: "Keep",
+        protectedAlbumNames: ["Keep"]  // デフォルトでKeepを保護
     )
 }
 
