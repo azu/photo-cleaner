@@ -1,0 +1,87 @@
+name: Release
+
+on:
+  pull_request:
+    types: [closed]
+    branches: [main]
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  release:
+    if: github.event.pull_request.merged == true && startsWith(github.event.pull_request.head.ref, 'release/')
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        with:
+          persist-credentials: false
+
+      - name: Extract version from branch name
+        id: version
+        run: |
+          BRANCH="${GITHUB_EVENT_PULL_REQUEST_HEAD_REF}"
+          VERSION="${BRANCH#release/v}"
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "tag=v$VERSION" >> $GITHUB_OUTPUT
+        env:
+          GITHUB_EVENT_PULL_REQUEST_HEAD_REF: ${{ github.event.pull_request.head.ref }}
+
+      - name: Setup Xcode
+        uses: maxim-lobanov/setup-xcode@60606e260d2fc5762a71e64e74b2174e8ea3c8bd # v1.6.0
+        with:
+          xcode-version: latest-stable
+
+      - name: Build archive
+        run: |
+          xcodebuild archive \
+            -project PhotoCleaner.xcodeproj \
+            -scheme PhotoCleaner \
+            -configuration Release \
+            -archivePath build/PhotoCleaner.xcarchive \
+            -destination 'generic/platform=iOS' \
+            CODE_SIGN_IDENTITY="-" \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO \
+            AD_HOC_CODE_SIGNING_ALLOWED=YES
+
+      - name: Export IPA
+        run: |
+          mkdir -p build/ipa
+          cd build/PhotoCleaner.xcarchive/Products/Applications
+          mkdir Payload
+          cp -r PhotoCleaner.app Payload/
+          zip -r ../../../ipa/PhotoCleaner.ipa Payload
+
+      - name: Get IPA size
+        id: ipa-size
+        run: |
+          SIZE=$(stat -f%z build/ipa/PhotoCleaner.ipa)
+          echo "size=$SIZE" >> $GITHUB_OUTPUT
+
+      - name: Update apps.json size
+        run: |
+          jq --argjson s ${STEPS_IPA_SIZE_OUTPUTS_SIZE} '.apps[0].size = $s' altstore/apps.json > tmp.json && mv tmp.json altstore/apps.json
+        env:
+          STEPS_IPA_SIZE_OUTPUTS_SIZE: ${{ steps.ipa-size.outputs.size }}
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@a06a81a03ee405af7f2048a818ed3f03bbf83c7b # v2.5.0
+        with:
+          tag_name: ${{ steps.version.outputs.tag }}
+          name: ${{ steps.version.outputs.tag }}
+          generate_release_notes: true
+          files: build/ipa/PhotoCleaner.ipa
+
+      - name: Setup Pages
+        uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5.0.0
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa # v3.0.1
+        with:
+          path: altstore
+
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4.0.5

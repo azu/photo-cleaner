@@ -1,0 +1,85 @@
+name: Create Release PR
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Release version (e.g., 1.0.0)"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  create-release-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        with:
+          persist-credentials: false
+
+      - name: Validate version format
+        run: |
+          if ! echo "${INPUTS_VERSION}" | grep -qE '^[0-9]+\.[0-9]+\.[0-9]+$'; then
+            echo "Error: Version must be in format X.Y.Z"
+            exit 1
+          fi
+        env:
+          INPUTS_VERSION: ${{ inputs.version }}
+
+      - name: Update version in project.pbxproj
+        run: |
+          sed -i 's/MARKETING_VERSION = [0-9.]*;/MARKETING_VERSION = ${INPUTS_VERSION};/g' PhotoCleaner.xcodeproj/project.pbxproj
+        env:
+          INPUTS_VERSION: ${{ inputs.version }}
+
+      - name: Update apps.json
+        run: |
+          VERSION="${INPUTS_VERSION}"
+          DATE=$(date +%Y-%m-%d)
+
+          # Update version
+          jq --arg v "$VERSION" '.apps[0].version = $v' altstore/apps.json > tmp.json && mv tmp.json altstore/apps.json
+
+          # Update versionDate
+          jq --arg d "$DATE" '.apps[0].versionDate = $d' altstore/apps.json > tmp.json && mv tmp.json altstore/apps.json
+
+          # Update downloadURL
+          jq --arg url "https://github.com/${{ github.repository }}/releases/download/v${VERSION}/PhotoCleaner.ipa" \
+            '.apps[0].downloadURL = $url' altstore/apps.json > tmp.json && mv tmp.json altstore/apps.json
+        env:
+          INPUTS_VERSION: ${{ inputs.version }}
+
+      - name: Generate release notes
+        id: release-notes
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
+        env:
+          INPUTS_VERSION: ${{ inputs.version }}
+        with:
+          script: |
+            const { data } = await github.rest.repos.generateReleaseNotes({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              tag_name: `v${process.env.INPUTS_VERSION}`,
+            });
+            core.setOutput('body', data.body);
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@22a9089034f40e5a961c8808d113e2c98fb63676 # v7.0.11
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "chore: release v${{ inputs.version }}"
+          title: "Release v${{ inputs.version }}"
+          body: |
+            ## Release v${{ inputs.version }}
+
+            ${{ steps.release-notes.outputs.body }}
+
+            ---
+            This PR was automatically created by the release workflow.
+          branch: release/v${{ inputs.version }}
+          base: main
+          labels: release
+          draft: true
