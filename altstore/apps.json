@@ -18,10 +18,10 @@
         "https://raw.githubusercontent.com/azu/photo-cleaner/main/docs/ss3.png",
         "https://raw.githubusercontent.com/azu/photo-cleaner/main/docs/ss4.png"
       ],
-      "version": "1.0.1",
+      "version": "1.0.2",
       "versionDate": "2026-01-03",
       "versionDescription": "Initial release",
-      "downloadURL": "https://github.com/azu/photo-cleaner/releases/download/v1.0.1/PhotoCleaner.ipa",
+      "downloadURL": "https://github.com/azu/photo-cleaner/releases/download/v1.0.2/PhotoCleaner.ipa",
       "size": 0,
       "minOSVersion": "17.0"
     }
