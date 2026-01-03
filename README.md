@@ -4,18 +4,9 @@ Amazon Photosにバックアップ済みの古い写真をiPhoneから削除し�
 
 ## スクリーンショット
 
-<p align="center">
-  <img src="docs/ss1.png" width="200" />
-  <img src="docs/ss2.png" width="200" />
-  <img src="docs/ss3.png" width="200" />
-  <img src="docs/ss4.png" width="200" />
-</p>
-<p align="center">
-  <em>メイン画面</em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  <em>設定</em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  <em>削除確認</em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  <em>コンタクトシート</em>
-</p>
+| メイン画面 | 設定 | 削除確認 | コンタクトシート |
+|:--:|:--:|:--:|:--:|
+| <img src="docs/ss1.png" width="200" /> | <img src="docs/ss2.png" width="200" /> | <img src="docs/ss3.png" width="200" /> | <img src="docs/ss4.png" width="200" /> |
 
 ## なぜこのアプリが必要か
 
