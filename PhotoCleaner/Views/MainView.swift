@@ -172,12 +172,17 @@ struct MainView: View {
                 .tint(.red)
                 .disabled(!viewModel.isActionEnabled)
 
-                Button("再スキャン") {
+                Button {
                     Task {
                         await viewModel.scan(settings: settingsStore.settings)
                     }
+                } label: {
+                    Label("再スキャン", systemImage: "arrow.clockwise")
+                        .font(.headline)
+                        .frame(maxWidth: .infinity)
+                        .padding()
                 }
-                .font(.subheadline)
+                .buttonStyle(.bordered)
             }
             .padding()
             .background(Color(.systemBackground))
