@@ -19,8 +19,8 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Create LocalConfig.xcconfig
-        run: touch LocalConfig.xcconfig
+      - name: Setup
+        run: ./setup.sh
 
       - name: Extract version from branch name
         id: version
