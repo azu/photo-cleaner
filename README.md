@@ -39,7 +39,7 @@ iPhoneのストレージは限られています。Amazon Photosなどのクラ�
 3. 以下のURLを入力:
 
 ```
-https://azu.github.io/photo-cleaner/apps.json
+https://raw.githubusercontent.com/azu/photo-cleaner/main/altstore/apps.json
 ```
 
 4. 「Photo Cleaner」をインストール

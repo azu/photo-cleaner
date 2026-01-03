@@ -1,7 +1,7 @@
 {
   "name": "Photo Cleaner",
   "identifier": "io.github.azu.photo-cleaner.source",
-  "sourceURL": "https://azu.github.io/photo-cleaner/apps.json",
+  "sourceURL": "https://raw.githubusercontent.com/azu/photo-cleaner/main/altstore/apps.json",
   "apps": [
     {
       "name": "Photo Cleaner",
