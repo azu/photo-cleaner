@@ -58,7 +58,7 @@ final class CleanerViewModel: ObservableObject {
 
     // MARK: - Authorization
 
-    func checkAuthorization() async {
+    func checkAuthorization(settings: AppSettings? = nil) async {
         authorizationStatus = photoService.checkAuthorizationStatus()
 
         if authorizationStatus == .notDetermined {
@@ -68,7 +68,7 @@ final class CleanerViewModel: ObservableObject {
 
         switch authorizationStatus {
         case .authorized, .limited:
-            await scan()
+            await scan(settings: settings)
         case .denied, .restricted:
             state = .error("フォトライブラリへのアクセスが許可されていません。設定アプリから許可してください。")
         case .notDetermined:

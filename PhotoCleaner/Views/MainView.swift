@@ -26,7 +26,7 @@ struct MainView: View {
                 SettingsView(settingsStore: settingsStore)
             }
             .task {
-                await viewModel.checkAuthorization()
+                await viewModel.checkAuthorization(settings: settingsStore.settings)
             }
         }
     }
@@ -233,7 +233,7 @@ struct MainView: View {
 
             Button("再試行") {
                 Task {
-                    await viewModel.checkAuthorization()
+                    await viewModel.checkAuthorization(settings: settingsStore.settings)
                 }
             }
             .buttonStyle(.borderedProminent)
