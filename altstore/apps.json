@@ -10,9 +10,14 @@
       "website": "https://github.com/azu/photo-cleaner",
       "subtitle": "Clean up backed-up photos",
       "localizedDescription": "Amazon Photosにバックアップ済みの写真をiPhoneから自動的に削除するアプリ。お気に入りやアルバム所属の写真は保護し、月ごとに1枚を自動でKeepアルバムに残して振り返りを担保します。",
-      "iconURL": "https://raw.githubusercontent.com/azu/photo-cleaner/main/PhotoCleaner/Assets.xcassets/AppIcon.appiconset/icon_128.png",
+      "iconURL": "https://raw.githubusercontent.com/azu/photo-cleaner/main/docs/icon.png",
       "tintColor": "007AFF",
-      "screenshotURLs": [],
+      "screenshotURLs": [
+        "https://raw.githubusercontent.com/azu/photo-cleaner/main/docs/ss1.png",
+        "https://raw.githubusercontent.com/azu/photo-cleaner/main/docs/ss2.png",
+        "https://raw.githubusercontent.com/azu/photo-cleaner/main/docs/ss3.png",
+        "https://raw.githubusercontent.com/azu/photo-cleaner/main/docs/ss4.png"
+      ],
       "version": "1.0.0",
       "versionDate": "2025-01-03",
       "versionDescription": "Initial release",
